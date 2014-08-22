@@ -22,6 +22,15 @@
 
 makeCacheMatrix <- function(x = matrix()) {
 
+    ## getter and setter methods are boilerplate
+
+    get <- function() x
+    set <- function(y) {
+        ## assigns the value to the variables in the *parent* scope
+        x   <<- y
+        inv <<- NULL
+    }
+
     # (cached) inverse
     inv <- NULL
 
@@ -29,18 +38,10 @@ makeCacheMatrix <- function(x = matrix()) {
     # getter is trivial
     getinv <- function() inv
     # setter receives the value and assigns it to the inv variable in
-    # the *parent* 
+    # the *parent* scope
     setinv <- function(matrixInverse) inv <<- matrixInverse
     
-    ## getter and setter methods are boilerplate
-
-    get <- function() x
-    set <- function(y) {
-        x <<- y
-        inv <<- NULL
-    }
-    
-    # Return the handle to myself
+    # Return the list of methods
     list(set = set, get = get, setinv = setinv, getinv = getinv)
 
 }

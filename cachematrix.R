@@ -67,15 +67,32 @@ makeCacheMatrix <- function(x = matrix()) {
 ## [2,]  0.0  0.5
 
 cacheSolve <- function(x, ...) {
+
+    ## get the cached value for the inverse via the 'smart matrix'
+    ## getter
     inv <- x$getinv()
+
+    # since the matrix setter voids the cached value for the inverse
+    # every time the matrix is updated, a non-null value means we can
+    # simply return the cached value.
 
     if(!is.null(inv)) {
         message("getting cached data")
         return(inv)
     }
+
+    ## Tough luck, no cached value to fall back on, need to calculate
+    ## one here.
     
+    # get the matrix (via the getter method)
     data <- x$get()
+
+    # calculate the inverse
     inv <- solve(data, ...)
+
+    # update the cache via the setter method
     x$setinv(inv)
+
+    ## return the inverse matrix
     inv
 }
